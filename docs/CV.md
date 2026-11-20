@@ -9,7 +9,7 @@
   epoch-level checkpoints and verified synthetic interruption/resume behaviour.
 
 The detector follow-up is exploratory and uses the same training images across
-seeds. The revised detector has not been tested for downstream retraining.
+seeds. The subsequent class-matched retraining comparison was negative in all three seeds; the latest raw follow-up files remain on Stanage.
 The earlier mean-loss retraining did not outperform the random-selection control
 on mean worst-group accuracy. Never describe the 29.3% AP improvement as a
 classifier-accuracy or general robustness improvement. See RESULTS.md for the

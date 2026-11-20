@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "seeds": [42],
+  "methods": ["class_relative", "class_matched_random"],
+  "epochs": 2,
+  "reference_epochs": 30,
+  "early_epoch": 5,
+  "pilot": true,
+  "control_seed_offset": 10000,
+  "fraction": 0.1,
+  "upweight": 10.0,
+  "batch_size": 64,
+  "num_workers": 4,
+  "image_size": 224,
+  "learning_rate": 0.0001,
+  "weight_decay": 0.0001,
+  "pretrained": true
+}

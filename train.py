@@ -151,7 +151,8 @@ def save_checkpoint(path, state):
     temporary.replace(path)
 
 
-def train_method(args, c, seed, method, folder, data, identity, scores=None):
+def train_method(args, c, seed, method, folder, data, identity, scores=None,
+                 selected_ids=None, expected_initial_hash=None):
     train, dynamics, val, test, backgrounds = data
     signature = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     last = folder / "last.pt"
@@ -159,7 +160,12 @@ def train_method(args, c, seed, method, folder, data, identity, scores=None):
         raise ValueError(f"Refusing to overwrite {folder}; use --resume or a new output directory")
     folder.mkdir(parents=True, exist_ok=True)
     set_seed(seed)
-    selected = [] if method == "erm" else select_examples(scores, method, c["fraction"], seed)
+    if selected_ids is None:
+        selected = [] if method == "erm" else select_examples(scores, method, c["fraction"], seed)
+    else:
+        selected = list(selected_ids)
+        if method == "erm" or len(selected) != len(set(selected)):
+            raise ValueError("Explicit selection must be unique and belong to a retraining method")
     weights = None if method == "erm" or not selected else sample_weights(train.ids, selected, c["upweight"])
     write_json(folder / "selection.json", dict(method=method, selected_ids=selected,
         early_epoch=c["early_epoch"], fraction=c["fraction"], upweight=c["upweight"],
@@ -171,6 +177,8 @@ def train_method(args, c, seed, method, folder, data, identity, scores=None):
     model = build_model(args, c).to(device)
     initial_hash = hashlib.sha256(b"".join(v.detach().cpu().numpy().tobytes()
                                            for v in model.state_dict().values())).hexdigest()
+    if expected_initial_hash is not None and initial_hash != expected_initial_hash:
+        raise ValueError("Initial model differs from the reference ERM")
     optimizer = torch.optim.AdamW(model.parameters(), lr=c["learning_rate"], weight_decay=c["weight_decay"])
     train_loader = make_loader(train, c, device, generator, weights, training=True)
     val_loader = make_loader(val, c, device, eval_generator)

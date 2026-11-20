@@ -21,7 +21,7 @@ cd D:\GitHub\waterbirds-training-dynamics
 python -m unittest discover -s tests -v
 ```
 
-There are 23 data-rule, detector and analysis tests. They require only Python 3.10+.
+There are 35 data-rule, detector, relative-control and analysis tests. They require only Python 3.10+.
 They do not download data or run training.
 
 ## Local CPU synthetic pipeline and resume check
@@ -179,3 +179,5 @@ analysis. They are ignored while jobs are active; copy small evidence files to
 an intentional `evidence/` directory after validation. Keep large `.pt` files
 outside Git. Import the original Colab CSVs separately if available; never mix
 their checkpoint rules/environments into the new matched comparison's means.
+
+The new class-relative retraining follow-up has its own commands and output roots in [RELATIVE.md](RELATIVE.md); its cluster result is now reported there, with the latest raw follow-up import still pending.

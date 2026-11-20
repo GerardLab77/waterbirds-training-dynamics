@@ -87,14 +87,33 @@ The archived per-class metrics verify this distinction.
 
 This follow-up was proposed after inspecting the original experiment. It is
 exploratory evidence on the same training images, not a blinded held-out study
-or proof of generalisation. The revised detector has not been used for a new
-retraining experiment. Do not attribute its score improvements to the earlier
-early-loss classifier or claim it beats the random control in robustness.
+or proof of generalisation. A subsequent class-relative retraining comparison has now completed: the
+operator reported that it lost to an exact class-matched random control in all
+three seeds. The latest raw files are not yet imported; see RELATIVE.md and the
+reported transcript. Do not attribute the detector score improvement to better
+classifier robustness.
 
 Reports: [summary](../evidence/stanage/results/detection-v2/summary.csv),
 [all seed/class metrics](../evidence/stanage/results/detection-v2/metrics.csv),
 [paired changes](../evidence/stanage/results/detection-v2/paired_differences.csv),
 [protocol and input hashes](../evidence/stanage/results/detection-v2/protocol.json).
+
+## Class-matched retraining follow-up: negative result
+
+The operator's cluster analysis validated six new model/seed results. Mean
+worst-group accuracy was 43.87% for class-relative retraining and 49.69% for
+class-matched random selection. The scored selection lost by 4.67, 5.45 and
+7.32 percentage points across the three seeds (about 5.8 points on average).
+Both methods used exact matched bird-class counts and the frozen protocol.
+
+The console summary is transcribed in
+[`evidence/reported/relative-v1`](../evidence/reported/relative-v1/terminal-output.txt).
+Full new histories, predictions and raw CSV reports remain on Stanage. These
+reported findings have not yet been independently recomputed locally. The
+earlier original/detector raw evidence and reproduction commands below are
+unchanged. See [RELATIVE.md](RELATIVE.md) for the complete follow-up protocol
+and evidence limitation. No new detector generalisation or robustness gain is
+claimed from this negative experiment.
 
 ## Reproduce reports from the included evidence
 

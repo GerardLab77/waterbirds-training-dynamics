@@ -53,7 +53,7 @@ elapsed 00:17:41/00:17:43/00:17:45. Full analysis validated all 12 results.
 This verifies synthetic checkpoint recovery, not an interrupted real GPU run.
 
 The CPU detector follow-up improved top-10% precision and AP in all three model
-seeds. Its class-relative score has not been used in a new retraining campaign.
+seeds. Its subsequent class-matched retraining comparison was negative; the latest raw files are still on Stanage.
 The original raw-loss retraining did not outperform the random control on mean
 worst-group accuracy. See RESULTS.md for exact findings and variability.
 
@@ -66,3 +66,21 @@ no git history, so the recorded git revision is null rather than fabricated.
 GitHub Actions is prepared to run tests, synthetic recovery and recorded-data
 validation after a future push; it has not been triggered by this local work.
 Original notebook outputs remain historical and have not been rerun.
+
+## Class-matched retraining follow-up, completed on cluster
+
+Added fixed class-relative selections and exact bird-class-matched random
+controls, reusing completed ERM histories. The runner checks reference data,
+training settings, package/Python/GPU identities, pretrained weights and
+initial model hashes. Two fresh models per seed go to a separate output root.
+The primary report is the paired worst-group accuracy difference against the
+matched random control. Twelve new tests bring the suite to 35 cases.
+Source/config syntax has been checked; the agent has not executed tests or
+training for this update. The operator completed and validated the CPU smoke,
+real-data GPU pilot and six full new model runs. The full class-relative method
+lost to class-matched random on worst-group accuracy in all three seeds.
+The console summary and scheduler states are transcribed under evidence/reported;
+raw new model files/reports remain on Stanage. The follow-up has not been
+independently recomputed locally. This distinction does not change the earlier
+eight imported CSV reports, which were independently verified.
+GitHub Actions for this update are tracked separately from cluster results.

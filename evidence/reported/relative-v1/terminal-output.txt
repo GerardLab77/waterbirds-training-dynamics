@@ -1,0 +1,18 @@
+Provenance: operator-provided terminal output transcribed from this project's chat.
+These are rounded console summaries, not raw prediction CSVs or independently
+recomputed six-model results. The latest raw follow-up files remain on Stanage.
+
+Scheduler output supplied by operator:
+JobID          State       ExitCode  Elapsed
+12241166_0     COMPLETED   0:0       00:08:06
+12241166_1     COMPLETED   0:0       00:08:03
+12241166_2     COMPLETED   0:0       00:08:06
+
+Analysis output supplied by operator:
+Validated 6 new method/seed results with exact class-matched selections
+reference_erm          overall=0.8750 worst-group=0.4398
+class_relative         overall=0.8730 worst-group=0.4387
+class_matched_random   overall=0.8794 worst-group=0.4969
+seed=42: class-relative minus class-matched random worst-group=-4.67 pp, overall=-0.26 pp
+seed=43: class-relative minus class-matched random worst-group=-5.45 pp, overall=-1.78 pp
+seed=44: class-relative minus class-matched random worst-group=-7.32 pp, overall=+0.12 pp

@@ -1,7 +1,7 @@
 # Detector follow-up: class-relative early loss
 
 The completed baseline detected shortcut-conflicting images with per-seed
-ROC-AUC 0.835â€“0.908. Its top 10% contained 23.3â€“32.7% conflicting images,
+ROC-AUC 0.835–0.908. Its top 10% contained 23.3–32.7% conflicting images,
 versus 5.0% dataset prevalence. Early-loss retraining did not beat the random
 control on mean worst-group accuracy. These original findings are retained.
 
@@ -19,7 +19,7 @@ selection found 112/157/117 conflicting examples with raw loss and 132/161/120
 with class-relative loss. Within-class AUC and AP stayed unchanged, as expected.
 Reports, raw data and source snapshots are included in evidence/stanage.
 See [RESULTS.md](RESULTS.md) for the full interpretation and reproduction steps.
-No class-relative retraining result is claimed.
+The subsequent class-matched retraining comparison was negative in all three seeds; see RELATIVE.md for the reported results and pending raw evidence.
 
 ## Fixed scoring rules
 

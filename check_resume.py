@@ -11,9 +11,11 @@ def main():
     parser.add_argument("uninterrupted")
     parser.add_argument("resumed")
     parser.add_argument("--seed",type=int,default=42)
+    parser.add_argument("--config",type=Path,help="Optional method list for a follow-up comparison")
     args=parser.parse_args()
     import torch
-    for method in METHODS:
+    methods=json.loads(args.config.read_text())["methods"] if args.config else METHODS
+    for method in methods:
         a=Path(args.uninterrupted)/f"seed_{args.seed}"/method
         b=Path(args.resumed)/f"seed_{args.seed}"/method
         if not (a/"COMPLETE").is_file() or not (b/"COMPLETE").is_file():
