@@ -1,0 +1,69 @@
+{
+  "seed": 42,
+  "method": "jtt",
+  "signature": "e7bbc72ea2fc38cce3948b5b95f8c741440ec21c93f0d19c6783a7a41af38d4c",
+  "selected_epoch": 6,
+  "selected_count": 6,
+  "initial_model_sha256": "ff9007dbe2dd3c8394883ad3c01f0e481d7240590edaf8cc82f9b1849a034b07",
+  "synthetic": false,
+  "config": {
+    "schema_version": 1,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "methods": [
+      "erm",
+      "jtt",
+      "early_loss",
+      "random"
+    ],
+    "epochs": 30,
+    "early_epoch": 5,
+    "fraction": 0.1,
+    "upweight": 10.0,
+    "batch_size": 64,
+    "num_workers": 4,
+    "image_size": 224,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "pretrained": true
+  },
+  "dataset": {
+    "kind": "waterbirds",
+    "version": "1.0",
+    "n_train": 4795,
+    "n_val": 1199,
+    "n_test": 5794,
+    "metadata_sha256": "2f023b9dc371f6fbb82c7cb810ff0f03e19c54c8055a2e37517ae7bb56644362",
+    "split_ids_sha256": "2f90f228ab16d303abbb3f27950fdb273f51b0935c4f92dd5868d141ad9891c4"
+  },
+  "training_elapsed_s": 213.20948728406802,
+  "validation": {
+    "n": 1199,
+    "overall_accuracy": 0.8673894912427023,
+    "group_0_n": 467,
+    "group_0_accuracy": 1.0,
+    "group_1_n": 133,
+    "group_1_accuracy": 0.37593984962406013,
+    "group_2_n": 466,
+    "group_2_accuracy": 0.8648068669527897,
+    "group_3_n": 133,
+    "group_3_accuracy": 0.9022556390977443,
+    "worst_group_accuracy": 0.37593984962406013
+  },
+  "test": {
+    "n": 5794,
+    "overall_accuracy": 0.8731446323783224,
+    "group_0_n": 2255,
+    "group_0_accuracy": 0.9973392461197339,
+    "group_1_n": 642,
+    "group_1_accuracy": 0.4205607476635514,
+    "group_2_n": 2255,
+    "group_2_accuracy": 0.8749445676274945,
+    "group_3_n": 642,
+    "group_3_accuracy": 0.883177570093458,
+    "worst_group_accuracy": 0.4205607476635514
+  }
+}

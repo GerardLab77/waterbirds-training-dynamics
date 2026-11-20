@@ -1,0 +1,16 @@
+{
+  "method": "jtt",
+  "selected_ids": [
+    1438,
+    3362,
+    5366,
+    5374,
+    5945,
+    6434
+  ],
+  "early_epoch": 5,
+  "fraction": 0.1,
+  "upweight": 10.0,
+  "rule": "fixed early-epoch errors",
+  "subgroup_metadata_used": false
+}

@@ -1,113 +1,25 @@
 # Waterbirds Training Dynamics
 
-An undergraduate research project investigating whether a model's behaviour during training can reveal when it has learned an unreliable shortcut.
+A bird classifier can get the right answer for the wrong reason. In Waterbirds, landbirds usually appear on land and waterbirds usually appear on water. I wanted to see whether a model's behaviour during training could help find images where that shortcut stops working.
 
-## Research question
+I trained an ImageNet-pretrained ResNet-18 and recorded each image's loss, confidence and prediction after every epoch. The images keep the same IDs when training is shuffled, so I can follow the same example over time. I ran the experiments on Sheffield's Stanage cluster using Slurm and an A100 GPU, with 30 epochs and three random seeds.
 
-> To what extent can early, label-free training dynamics identify training examples associated with shortcut-conflicting subgroups in Waterbirds, and can using these signals improve worst-group accuracy without subgroup labels?
+Normal training reached **87.50% overall test accuracy**, but only **43.98% on the weakest bird/background group**, averaged over the three seeds. The overall number hid a much bigger problem on the less common combinations.
 
-## Project overview
+I first ranked training images by their mean loss over the first five epochs. Only about 5% of training images have conflicting bird/background combinations, but they made up **26.81% of the highest-loss 10%** on average. The loss was finding something useful.
 
-The [Waterbirds](https://wilds.stanford.edu/datasets/#waterbirds) dataset contains images of landbirds and waterbirds shown against land or water backgrounds. Because bird type and background are correlated, an image classifier can perform well overall while relying too heavily on the background and failing on the less common bird/background combinations.
+Looking at the selections, I found that waterbirds took up 39–65% of that list even though they were only about 23% of the training set. So I changed the score to compare an image's loss with other images of the same bird type. This uses the bird labels already available during training; background labels are only used afterwards to check the ranking.
 
-This project uses an image-only ERM baseline and records per-example training behaviour over time. Candidate signals include loss, confidence, correctness, learning time, and forgetting events. Subgroup metadata is reserved for retrospective evaluation; it is not used to train the model or select examples.
+That change improved top-10% precision from **26.81% to 28.68%**, or **1.88 percentage points**. Average precision rose from **0.276 to 0.357**, about **29% relative**. Both measures improved in all three seeds, using the saved training histories without another GPU run.
 
-## Current findings
+![Original and class-relative detector results for each seed](figures/detection-comparison.png)
 
-The baseline was trained for 30 epochs using seeds 42, 43, and 44.
+I also tested whether prioritising difficult images actually helped train a better classifier. I compared normal training, JTT-style retraining on early mistakes, early-loss selection, and a random-selection control. The original early-loss version reached **47.40% mean worst-group accuracy**, but random selection reached **48.60%**. It did not demonstrate an advantage over that control.
 
-- Mean test accuracy: approximately **86.9%**.
-- Mean test worst-group accuracy: approximately **53.8%**.
-- The weakest subgroup was consistently waterbirds on land backgrounds.
-- Mean loss by epoch 5 identified shortcut-conflicting examples with approximately **0.88 ROC-AUC**.
-- The top 1% ranked by mean loss contained approximately **39%** shortcut-conflicting examples, compared with a baseline prevalence of about **5%**.
-- A preliminary JTT comparison was implemented. In this run, it did not consistently improve worst-group accuracy over ERM.
+The class-relative detector was a follow-up to that experiment. I have measured its better ranking, but have not yet tested whether using it for retraining improves the classifier. The follow-up is exploratory, and the three model seeds use the same images rather than new held-out datasets. It changes how the two bird classes are ranked against each other; the ordering within each class stays the same.
 
-These are preliminary results from three seeds, not a claim that the method generalises to all datasets or settings.
+The pipeline has epoch-level checkpoints, saved optimiser and random states, and 23 automated tests covering selection rules, sample IDs, subgroup metrics and incomplete results. A deliberately interrupted synthetic run reproduced the uninterrupted models and predictions. Slurm runs one seed at a time, with validation-based checkpoint selection and separate test evaluation.
 
-## Notebook
+The [results and limitations](docs/RESULTS.md) link to the raw CSVs, source snapshots and per-seed comparisons. The [detector notes](docs/DETECTION.md) explain the scoring change, and the [running guide](docs/RUNNING.md) has reproduction commands. The [original notebook](01_baseline_waterbirds.ipynb) keeps the earlier Colab exploration.
 
-The main reproducible artifact is:
-
-- [`01_baseline_waterbirds.ipynb`](01_baseline_waterbirds.ipynb)
-
-The notebook includes:
-
-- WILDS Waterbirds dataset setup.
-- ImageNet-pretrained ResNet-18 ERM training.
-- 30-epoch runs for seeds 42, 43, and 44.
-- Stable sample IDs based on original WILDS training indices.
-- Shuffled training with augmentation.
-- Deterministic training-dynamics evaluation after every epoch.
-- Overall, subgroup, and worst-group accuracy evaluation.
-- Label-free signal analysis using full and early training windows.
-- An optional JTT comparison.
-
-## Reproducibility
-
-The notebook is designed for Google Colab with a single GPU. To run a fresh baseline, use:
-
-```python
-SEEDS = [42, 43, 44]
-RUN_SEEDS = [42, 43, 44]
-```
-
-For more reliable Colab execution, use:
-
-```python
-"num_workers": 0
-```
-
-The training loop runs seeds sequentially. Each seed resets the Python, NumPy, and PyTorch random states and creates a fresh model, optimizer, DataLoader, and results container.
-
-If previous outputs were saved to Google Drive, the notebook includes an optional restore cell. This allows the signal-analysis cells to be run without retraining the baseline.
-
-## Output files
-
-For each seed, the baseline produces:
-
-```text
-results/seed_42/training_dynamics.csv
-results/seed_42/epoch_metrics.csv
-results/seed_42/validation_predictions.csv
-results/seed_42/test_predictions.csv
-```
-
-The same files are produced for seeds 43 and 44. Additional analysis outputs include:
-
-```text
-results/multiseed_baseline_summary.csv
-results/seed_{42,43,44}/signal_scores.csv
-results/seed_{42,43,44}/signal_scores_first_{5,10}_epochs.csv
-results/multiseed_detection_metrics.csv
-results/multiseed_early_detection_metrics.csv
-results/signal_definitions.csv
-```
-
-Checkpoints are saved as:
-
-```text
-checkpoints/resnet18_waterbirds_erm_seed_42_30epochs.pt
-checkpoints/resnet18_waterbirds_erm_seed_43_30epochs.pt
-checkpoints/resnet18_waterbirds_erm_seed_44_30epochs.pt
-```
-
-## Interpretation and limitations
-
-Overall accuracy alone hides the subgroup failure in this task, so worst-group and per-group accuracy are reported alongside it. The label-free signals are evaluated against subgroup metadata only after they have been calculated.
-
-The current evidence supports the more cautious conclusion that early training dynamics can identify examples associated with shortcut-conflicting subgroups in Waterbirds. Further work is needed to establish whether using those signals improves robustness, how they compare with a carefully matched JTT implementation, and whether the findings transfer to a second dataset.
-
-## Planned next steps
-
-1. Validate the early-signal results separately for each seed.
-2. Finalise a canonical JTT comparison.
-3. Retrain using a pre-specified early mean-loss signal.
-4. Compare ERM, JTT, and dynamics-based retraining on worst-group accuracy.
-5. Repeat the completed pipeline on a second shortcut-learning dataset.
-
-TRAK and other data-attribution methods are possible later extensions, not part of the current core experiment.
-
-## Acknowledgements
-
-This project uses the [WILDS benchmark](https://wilds.stanford.edu/) and the Waterbirds dataset for studying distribution shift and subgroup robustness.
+[Waterbirds through WILDS](https://github.com/p-lambda/wilds/blob/main/wilds/datasets/waterbirds_dataset.py) · [Just Train Twice](https://github.com/anniesch/jtt)

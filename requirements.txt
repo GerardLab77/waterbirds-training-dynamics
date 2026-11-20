@@ -1,0 +1,9 @@
+# Torch/vision pair matches the versions printed by the original Colab notebook.
+# Install from the explicit CPU/CUDA index in docs/RUNNING.md first.
+torch==2.11.0
+torchvision==0.26.0
+wilds==2.0.0
+numpy==2.0.2
+pandas==2.2.2
+matplotlib==3.10.0
+Pillow==11.1.0

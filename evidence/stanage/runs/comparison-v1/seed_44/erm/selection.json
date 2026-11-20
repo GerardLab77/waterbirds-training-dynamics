@@ -1,0 +1,9 @@
+{
+  "method": "erm",
+  "selected_ids": [],
+  "early_epoch": 5,
+  "fraction": 0.1,
+  "upweight": 10.0,
+  "rule": "erm",
+  "subgroup_metadata_used": false
+}

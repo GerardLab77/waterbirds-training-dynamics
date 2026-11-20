@@ -1,0 +1,30 @@
+{
+  "status": "exploratory follow-up after inspecting the initial comparison",
+  "detectors": [
+    "mean_loss",
+    "class_relative_loss"
+  ],
+  "epoch": 5,
+  "fraction": 0.1,
+  "primary_metric": "precision_at_10pct",
+  "source_sha256": "c4c73436c35db012a74d34fd6be63786b1f2588604ed5c164a06f5a6dd5b235f",
+  "input_hashes": {
+    "42": {
+      "erm/training_dynamics.csv": "620a532870689841ad65b80a929fd45453d8fb7f2e09f55a1a812fe3b736e361",
+      "training_metadata.csv": "6ca30e368b9086147b4d7b15068a75138f44bc0530428f386f4a984e0070380a",
+      "metadata.json": "669f13c03e8e54cb917b410a6ac84fa97976d5919132f40831e575b72d1e9ef8"
+    },
+    "43": {
+      "erm/training_dynamics.csv": "75bf3d75df15161811f02b401e91d0393a0d5bd6b99437772cadafcf33050ed7",
+      "training_metadata.csv": "6ca30e368b9086147b4d7b15068a75138f44bc0530428f386f4a984e0070380a",
+      "metadata.json": "7e28d549766a9ee847e3df3df6d843d71d72aef94560a4e7298ba7d3d77e5ca7"
+    },
+    "44": {
+      "erm/training_dynamics.csv": "351f3c19c1bf49389b83c8ba8cec2744e8fd578159429cdba1d1397b985c4973",
+      "training_metadata.csv": "6ca30e368b9086147b4d7b15068a75138f44bc0530428f386f4a984e0070380a",
+      "metadata.json": "c0eaf044d76b307127a51e7212b6438f918dd9d8c1e3cdaa78694531717a2c69"
+    }
+  },
+  "subgroup_metadata_used_in_scoring": false,
+  "warning": "Seeds reuse the same images; no held-out generalisation claim."
+}
